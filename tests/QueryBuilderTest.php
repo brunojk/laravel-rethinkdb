@@ -8,6 +8,44 @@ class QueryBuilderTest extends TestCase
         DB::table('items')->truncate();
     }
 
+    public function testPush()
+    {
+        $id = DB::table('users')->insertGetId([
+            'name'      => 'John Doe',
+            'tags'      => [],
+            'messages'  => [],
+        ]);
+        DB::table('users')->where('id', $id)->push('tags', 'tag1');
+        $user = DB::table('users')->find($id);
+        $this->assertTrue(is_array($user['tags']));
+        $this->assertEquals(1, count($user['tags']));
+        $this->assertEquals('tag1', $user['tags'][0]);
+        DB::table('users')->where('id', $id)->push('tags', 'tag2');
+        $user = DB::table('users')->find($id);
+        $this->assertEquals(2, count($user['tags']));
+        $this->assertEquals('tag2', $user['tags'][1]);
+
+        // Add duplicate
+        DB::table('users')->where('id', $id)->push('tags', 'tag2');
+        $user = DB::table('users')->find($id);
+        $this->assertEquals(3, count($user['tags']));
+
+        // Add unique
+        DB::table('users')->where('id', $id)->push('tags', 'tag1', true);
+        $user = DB::table('users')->find($id);
+        $this->assertEquals(3, count($user['tags']));
+        $message = ['from' => 'Jane', 'body' => 'Hi John'];
+        DB::table('users')->where('id', $id)->push('messages', $message);
+        $user = DB::table('users')->find($id);
+        $this->assertTrue(is_array($user['messages']));
+        $this->assertEquals(1, count($user['messages']));
+
+        // As $user['messages'][0] is an ArrayObject, we cannot simply assert it to array, so we can assert every value of $message array
+        foreach ($message as $key => $value) {
+            $this->assertEquals($value, $user['messages'][0][$key]);
+        }
+    }
+
     public function testTable()
     {
         $this->assertInstanceOf('brunojk\LaravelRethinkdb\Query\Builder', DB::table('users'));
@@ -162,44 +200,6 @@ class QueryBuilderTest extends TestCase
         $this->assertEquals(2, count($items));
         $items = DB::table('items')->where('tags', 'contains', 'tag1')->get();
         $this->assertEquals(1, count($items));
-    }
-
-    public function testPush()
-    {
-        $id = DB::table('users')->insertGetId([
-            'name'      => 'John Doe',
-            'tags'      => [],
-            'messages'  => [],
-        ]);
-        DB::table('users')->where('id', $id)->push('tags', 'tag1');
-        $user = DB::table('users')->find($id);
-        $this->assertTrue(is_array($user['tags']));
-        $this->assertEquals(1, count($user['tags']));
-        $this->assertEquals('tag1', $user['tags'][0]);
-        DB::table('users')->where('id', $id)->push('tags', 'tag2');
-        $user = DB::table('users')->find($id);
-        $this->assertEquals(2, count($user['tags']));
-        $this->assertEquals('tag2', $user['tags'][1]);
-
-        // Add duplicate
-        DB::table('users')->where('id', $id)->push('tags', 'tag2');
-        $user = DB::table('users')->find($id);
-        $this->assertEquals(3, count($user['tags']));
-
-        // Add unique
-        DB::table('users')->where('id', $id)->push('tags', 'tag1', true);
-        $user = DB::table('users')->find($id);
-        $this->assertEquals(3, count($user['tags']));
-        $message = ['from' => 'Jane', 'body' => 'Hi John'];
-        DB::table('users')->where('id', $id)->push('messages', $message);
-        $user = DB::table('users')->find($id);
-        $this->assertTrue(is_array($user['messages']));
-        $this->assertEquals(1, count($user['messages']));
-
-        // As $user['messages'][0] is an ArrayObject, we cannot simply assert it to array, so we can assert every value of $message array
-        foreach ($message as $key => $value) {
-            $this->assertEquals($value, $user['messages'][0][$key]);
-        }
     }
 
     public function testPull()

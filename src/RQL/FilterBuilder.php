@@ -134,9 +134,10 @@ class FilterBuilder
         $field = $this->getField($where['column']);
         $values = array_values(is_array($where['values']) ? $where['values'] : [$where['values']]);
 
-//        return r\expr($values)->contains($field);
+        if(  ends_with($where['column'], 's') )
+            return r\expr($values)->difference($field)->count()->lt(count($values));
 
-        return r\expr($values)->difference($field)->count()->lt(count($values));
+        return r\expr($values)->contains($field);
     }
 
     protected function buildNotInFilter($where)

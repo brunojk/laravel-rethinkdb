@@ -300,8 +300,10 @@ class Builder extends QueryBuilder
         $this->compileWheres();
 
         if( $this->isAssocArray($value) ) {
+            $operation = $unique ? 'merge' : 'append';
+
             $result = $this->query->update([
-                $column => r\row($column)->merge($value),
+                $column => r\row($column)->{$operation}($value),
             ])->run();
         }
         else if ( !$unique ) {
@@ -313,8 +315,6 @@ class Builder extends QueryBuilder
             $result = $this->query->update([
                 $column => r\row($column)->difference($value)->{$operation}($value),
             ])->run();
-
-//        fwrite(STDOUT, print_r($result, true));
 
         return 0 == (int) $result['errors'];
     }

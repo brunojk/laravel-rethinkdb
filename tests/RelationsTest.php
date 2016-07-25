@@ -8,7 +8,6 @@ class RelationsTest extends TestCase
         Item::truncate();
         User::truncate();
         Role::truncate();
-        Role2::truncate();
         Permission::truncate();
     }
 

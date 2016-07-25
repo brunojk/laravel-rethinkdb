@@ -12,8 +12,10 @@
         >
     <testsuites>
         <testsuite name="all">
-            <!--<directory>tests/</directory>-->
-            <file>./tests/Relations2Test.php</file>
+            <directory>tests/</directory>
+            <!--<file>./tests/Relations2Test.php</file>-->
+            <!--<file>./tests/QueryBuilderTest.php</file>-->
+            <!--<file>./tests/QueryTest.php</file>-->
         </testsuite>
     </testsuites>
 </phpunit>

@@ -10,7 +10,7 @@ laravel-rethinkdb
 
 RethinkDB adapter for Laravel (with Eloquent support)
 
-**This is a copy of [laravel-rethinkdb](https://github.com//duxet/laravel-rethinkdb) with a little modifications and new features lik belongsToMany relationships!**
+**This is a copy of [laravel-rethinkdb](https://github.com//duxet/laravel-rethinkdb) with a little modifications and new features like belongsToMany relationships and user/password connections!**
 
 God bless [@jenssegers](https://github.com/jenssegers) for his great [laravel-mongodb](https://github.com/jenssegers/laravel-mongodb) project. I have used his tests and some other code, since it's awesome codebase for supporting other NoSQL databases. I hope he won't be angry on me for that ;)
 

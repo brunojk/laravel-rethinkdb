@@ -10,9 +10,4 @@ class Roler extends Model
     public function permissions() {
         return $this->belongsToMany('Permission');
     }
-
-    public static function create(array $attributes) {
-        $attributes['permission_ids'] = [];
-        return parent::create($attributes);
-    }
 }

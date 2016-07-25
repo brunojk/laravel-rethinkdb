@@ -4,9 +4,9 @@ class Relations2Test extends TestCase
 {
     public function tearDown()
     {
-        User::truncate();
-        Roler::truncate();
-        Permission::truncate();
+//        User::truncate();
+//        Roler::truncate();
+//        Permission::truncate();
     }
 
     protected function out($mix){
@@ -35,6 +35,8 @@ class Relations2Test extends TestCase
             'display_name' => 'Edit Exchanges',
             'description' => 'Edit existing exchanges pairs'
         ]);
+
+//        $this->out($role);
 
         // Refetch
         $role = Roler::with('permissions')->find($role->id);

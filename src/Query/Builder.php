@@ -308,12 +308,12 @@ class Builder extends QueryBuilder
         }
         else if ( !$unique ) {
             $result = $this->query->update([
-                $column => r\row($column)->{$operation}($value),
+                $column => r\row($column)->rDefault([])->{$operation}($value),
             ])->run();
         }
         else
             $result = $this->query->update([
-                $column => r\row($column)->difference($value)->{$operation}($value),
+                $column => r\row($column)->rDefault([])->difference($value)->{$operation}($value),
             ])->run();
 
         return 0 == (int) $result['errors'];

@@ -1,0 +1,29 @@
+{
+    "name": "brunojk/laravel-rethinkdb",
+    "description": "RethinkDB driver adapter for Laravel",
+    "authors": [
+        {
+            "name": "brunojk"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": { "brunojk\\LaravelRethinkdb\\": "src/" }
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/container": ">=5.0.0",
+        "illuminate/contracts": ">=5.0.0",
+        "illuminate/database": ">=5.0.0",
+        "illuminate/support": ">=5.0.0",
+        "danielmewes/php-rql": "~2.3.0"
+    },
+    "require-dev": {
+        "psr/log": "1.0.0",
+        "orchestra/testbench": "3.0.*",
+        "codeclimate/php-test-reporter": "0.1.*@dev",
+        "mockery/mockery": "0.9.*@dev",
+        "phpunit/phpunit": "5.4.6"
+    },
+    "minimum-stability": "dev"
+}

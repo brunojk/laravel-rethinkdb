@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use \brunojk\LaravelRethinkdb\Eloquent\Model;
+
+class DummyClass extends Model
+{
+    //
+}

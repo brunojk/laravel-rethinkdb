@@ -4,7 +4,6 @@ namespace brunojk\LaravelRethinkdb\Schema;
 
 use Closure;
 use brunojk\LaravelRethinkdb\Connection;
-use brunojk\LaravelRethinkdb\Schema\Blueprint;
 use r;
 
 class Builder extends \Illuminate\Database\Schema\Builder

@@ -55,6 +55,33 @@ class Builder extends QueryBuilder
         return $this->query;
     }
 
+
+    /**
+     * Get the count of the total records for the paginator.
+     *
+     * @param  array  $columns
+     * @return int
+     */
+    public function getCountForPagination($columns = ['*'])
+    {
+        $this->backupFieldsForCount();
+
+        $this->aggregate = ['function' => 'count', 'columns' => $this->clearSelectAliases($columns)];
+
+        $results = $this->r()->count();
+        return $results;
+
+//        $this->aggregate = null;
+//
+//        $this->restoreFieldsForCount();
+//
+//        if (isset($this->groups)) {
+//            return count($results);
+//        }
+//
+//        return isset($results[0]) ? (int) array_change_key_case((array) $results[0])['aggregate'] : 0;
+    }
+
     /**
      * Set the collection which the query is targeting.
      *
@@ -485,10 +512,16 @@ class Builder extends QueryBuilder
      */
     public function orderBy($column, $direction = 'asc', $index = false)
     {
-        $property = $this->unions ? 'unionOrders' : 'orders';
-        $direction = strtolower($direction) == 'asc' ? 'asc' : 'desc';
-        $this->{$property}[] = compact('column', 'direction', 'index');
+//        $property = $this->unions ? 'unionOrders' : 'orders';
+//        $direction = strtolower($direction) == 'desc' ? 'desc' : 'asc';
+//        $this->{$property}[] = compact('column', 'direction', 'index');
 
+        if( $index )
+            $this->query->orderBy(['index' => call_user_func("r\\{$direction}", $column)]);
+        else
+            $this->query->orderBy(call_user_func("r\\{$direction}", $column));
+
+//        dd(func_get_args());
         return $this;
     }
 

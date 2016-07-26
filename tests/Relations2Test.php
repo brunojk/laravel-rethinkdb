@@ -4,9 +4,9 @@ class Relations2Test extends TestCase
 {
     public function tearDown()
     {
-//        User::truncate();
-//        Roler::truncate();
-//        Permission::truncate();
+        User::truncate();
+        Roler::truncate();
+        Permission::truncate();
     }
 
     protected function out($mix){

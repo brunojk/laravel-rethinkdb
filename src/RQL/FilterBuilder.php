@@ -131,10 +131,11 @@ class FilterBuilder
 
     protected function buildInFilter($where)
     {
-        fwrite(STDOUT, print_r($where, true));
-
         $field = $this->getField($where['column']);
         $values = array_values(is_array($where['values']) ? $where['values'] : [$where['values']]);
+
+//        if(  ends_with($where['column'], 's') )
+//            return $field->rAand(r\expr($values)->difference($field)->count()->lt(count($values)));
 
         if(  ends_with($where['column'], 's') )
             return $field->contains(function($val) use ($values){

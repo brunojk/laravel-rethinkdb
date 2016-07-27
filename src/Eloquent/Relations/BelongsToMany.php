@@ -50,6 +50,27 @@ class BelongsToMany extends EloquentBelongsToMany
     }
 
     /**
+     * Execute the query as a "select" statement.
+     *
+     * @param  array  $columns
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function get($columns = array('*'))
+    {
+        if( empty($this->getParent()->getKey()) )
+            return parent::get($columns);
+
+        $models = $this->related->whereIn($this->getForeignKey(), $this->getParent()->getKey())->getModels();
+
+        $this->hydratePivotRelation($models);
+
+        if (count($models) > 0)
+            $models = $this->query->eagerLoadRelations($models);
+
+        return $this->related->newCollection($models);
+    }
+
+    /**
      * Create a new instance of the related model.
      *
      * @param  array  $attributes
@@ -188,6 +209,7 @@ class BelongsToMany extends EloquentBelongsToMany
         // associations, otherwise all of the association ties will be broken.
         // We'll return the numbers of affected rows when we do the deletes.
         $ids = (array) $ids;
+
         // Detach all ids from the parent model.
         $this->parent->pull($this->otherKey, $ids);
         // Prepare the query to select all related objects.

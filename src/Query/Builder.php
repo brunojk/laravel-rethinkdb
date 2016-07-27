@@ -356,9 +356,11 @@ class Builder extends QueryBuilder
      */
     public function pull($column, $value = null)
     {
+        $value = is_array($value) ? $value : [$value];
+
         $this->compileWheres();
         $result = $this->query->update([
-            $column => r\row($column)->difference([$value]),
+            $column => r\row($column)->difference($value),
         ])->run();
 
         return 0 == (int) $result['errors'];

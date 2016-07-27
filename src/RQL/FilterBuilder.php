@@ -135,7 +135,7 @@ class FilterBuilder
         $values = array_values(is_array($where['values']) ? $where['values'] : [$where['values']]);
 
         if(  ends_with($where['column'], 's') )
-            return r\expr($values)->difference($field)->count()->lt(count($values));
+            return $field->rAnd(r\expr($values)->difference($field)->count()->lt(count($values)));
 
         return r\expr($values)->contains($field);
     }

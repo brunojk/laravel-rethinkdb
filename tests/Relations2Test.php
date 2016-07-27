@@ -18,7 +18,7 @@ class Relations2Test extends TestCase
         $role = Roler::create([
             'id' => 'super_admin',
             'display_name' => 'Super Admin',
-            'description' => 'Root user, can do everything!!'
+            'description' => 'Super admin, can do everything!'
         ]);
 
         $perm = new Permission([
@@ -36,10 +36,8 @@ class Relations2Test extends TestCase
             'description' => 'Edit existing exchanges pairs'
         ]);
 
-//        $this->out($role);
-
-        // Refetch
-        $role = Roler::with('permissions')->find($role->id);
+         //Refetch
+        $role = Roler::with('permissions')->find($role->getKey());
         $permission = Permission::with('rolers')->first();
 
         $this->assertTrue(array_key_exists('roler_ids', $permission->getAttributes()));
@@ -56,10 +54,37 @@ class Relations2Test extends TestCase
         $this->assertCount(2, $role->permissions);
         $this->assertCount(1, $permission->rolers);
 
-        $permissions = Permission::whereIn('roler_ids', $role->id)->get();
-        $roles = Roler::whereIn('permission_ids', $permission->id)->get();
+        $permissions = Permission::whereIn('roler_ids', $role->getKey())->get();
+        $roles = Roler::whereIn('permission_ids', $permission->getKey())->get();
 
         $this->assertCount(2, $permissions);
         $this->assertCount(1, $roles);
+
+        $role2 = Roler::create([
+            'id' => 'root',
+            'display_name' => 'Root',
+            'description' => 'Root user, can do everything and more!'
+        ]);
+
+        $permission = $role->permissions()->create([
+            'id' => 'create_currencies',
+            'display_name' => 'Create Currencies',
+            'description' => 'Create new currencies',
+        ]);
+
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $permission->rolers);
+        $this->assertInstanceOf('Roler', $permission->rolers->first());
+        $this->assertCount(1, $permission->rolers);
+
+        $role2->permissions()->attach($permission);
+
+        $roles = Roler::whereIn('permission_ids', $permission->getKey())->get();
+        $this->assertCount(2, $roles);
+
+        //detach
+        $permission = Permission::find('create_currencies');
+
+        $permission->rolers()->detach($role);
+        $this->assertCount(1, $permission->rolers);
     }
 }

@@ -340,7 +340,7 @@ class Builder extends QueryBuilder
         }
         else
             $result = $this->query->update([
-                $column => r\row($column)->rDefault([])->difference($value)->{$operation}($value),
+                $column => r\row($column)->rDefault([])->difference((array)$value)->{$operation}($value),
             ])->run();
 
         return 0 == (int) $result['errors'];

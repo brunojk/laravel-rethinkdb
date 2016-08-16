@@ -14,10 +14,17 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      * @param Connection $connection
      * @param string     $table
      */
+    protected $options;
+
     public function __construct(Connection $connection, $table)
     {
         $this->connection = $connection;
+
+        $options = is_array($table) && isset($table['options']) ? $table['options'] : [];
+        $table = is_array($table) ? $table['name'] : $table;
+
         $this->table = $table;
+        $this->options = $options;
     }
 
     /**
@@ -41,7 +48,11 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     {
         $conn = $this->connection->getConnection();
         $db = r\db($this->connection->getDatabaseName());
-        $db->tableCreate($this->table)->run($conn);
+
+        if( count($this->options) )
+            $db->tableCreate($this->table, $this->options)->run($conn);
+        else
+            $db->tableCreate($this->table)->run($conn);
     }
 
     /**

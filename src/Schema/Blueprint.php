@@ -45,7 +45,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
                 $res = array_merge($def, $tdef );
         }
 
-        return res;
+        return $res;
     }
 
     /**

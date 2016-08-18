@@ -19,6 +19,11 @@ class RethinkdbServiceProvider extends ServiceProvider
     {
         Model::setConnectionResolver($this->app['db']);
         Model::setEventDispatcher($this->app['events']);
+
+        // Publish config files
+        $this->publishes([
+            __DIR__.'/config/config.php' => config_path('rethinkdb.php'),
+        ]);
     }
 
     /**
@@ -28,6 +33,11 @@ class RethinkdbServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Merges user's and rethink's configs.
+        $this->mergeConfigFrom(
+            __DIR__.'/config/config.php', 'rethinkdb'
+        );
+
         $this->app->resolving('db', function ($db) {
             $db->extend('rethinkdb', function ($config) {
                 return new Connection($config);

@@ -13,7 +13,8 @@
     <testsuites>
         <testsuite name="all">
             <!--<directory>tests/</directory>-->
-            <file>./tests/Relations2Test.php</file>
+            <file>./tests/SaRTest.php</file>
+            <!--<file>./tests/Relations2Test.php</file>-->
             <!--<file>./tests/QueryBuilderTest.php</file>-->
             <!--<file>./tests/QueryTest.php</file>-->
         </testsuite>

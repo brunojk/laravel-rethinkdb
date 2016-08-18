@@ -4,6 +4,8 @@ namespace brunojk\LaravelRethinkdb\Schema;
 
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Grammars\Grammar;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use r;
 
 class Blueprint extends \Illuminate\Database\Schema\Blueprint
@@ -27,6 +29,25 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
         $this->options = $options;
     }
 
+    protected function getOptions() {
+        if( count($this->options) )
+            return $this->options;
+
+        $res = [];
+
+        $conf = Config::get('rethinkdb.clustering');
+
+        if( $conf != 'default' and is_array($conf) ) {
+            $def = (array) Arr::get($conf, 'all_tables');
+            $tdef = Arr::get($conf, $this->table);
+
+            if( $tdef != 'default' && is_array($def) )
+                $res = array_merge($def, $tdef );
+        }
+
+        return res;
+    }
+
     /**
      * Execute the blueprint against the database.
      *
@@ -48,6 +69,8 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     {
         $conn = $this->connection->getConnection();
         $db = r\db($this->connection->getDatabaseName());
+
+        $this->options = $this->getOptions();
 
         if( count($this->options) )
             $db->tableCreate($this->table, $this->options)->run($conn);

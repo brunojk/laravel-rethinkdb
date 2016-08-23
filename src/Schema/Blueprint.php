@@ -41,7 +41,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
             $def = (array) Arr::get($conf, 'all_tables');
             $tdef = Arr::get($conf, $this->table);
 
-            if( $tdef != 'default' && is_array($def) )
+            if( $tdef != 'default' )
                 $res = array_merge($def, (array) $tdef );
         }
 

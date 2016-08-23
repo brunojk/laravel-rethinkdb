@@ -121,7 +121,7 @@ class RelationsTest extends TestCase
         $user->items()->save($item);
 
         $user = User::find($user->id);
-        $items = $user->items;
+        $items = $user->all();
         $this->assertEquals(1, count($items));
         $this->assertInstanceOf('Item', $items[0]);
         $this->assertEquals($user->id, $items[0]->user_id);

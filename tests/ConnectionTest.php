@@ -5,7 +5,6 @@ class ConnectionTest extends TestCase
     public function testConnection() {
         $connection = DB::connection('rethinkdb');
         $this->assertInstanceOf('brunojk\LaravelRethinkdb\Connection', $connection);
-        $connection->beginTransaction();
     }
 
     public function testReconnect()

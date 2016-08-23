@@ -85,26 +85,4 @@ class Connection extends \Illuminate\Database\Connection
     {
         return new Schema\Builder($this);
     }
-
-    /**
-     * Start a new database transaction.
-     *
-     * @return void
-     */
-    public function beginTransaction()
-    {
-        ++$this->transactions;
-        $this->fireConnectionEvent('beganTransaction');
-    }
-
-    /**
-     * Commit the active database transaction.
-     *
-     * @return void
-     */
-    public function commit()
-    {
-        --$this->transactions;
-        $this->fireConnectionEvent('committed');
-    }
 }

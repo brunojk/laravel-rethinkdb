@@ -6,7 +6,6 @@ use brunojk\LaravelRethinkdb\Console\Migrations\MigrateMakeCommand;
 use brunojk\LaravelRethinkdb\Console\Model\ModelMakeCommand;
 use brunojk\LaravelRethinkdb\Eloquent\Model;
 use brunojk\LaravelRethinkdb\Migrations\MigrationCreator;
-use brunojk\LaravelRethinkdb\Queue\RethinkDBConnector;
 use Illuminate\Support\ServiceProvider;
 
 class RethinkdbServiceProvider extends ServiceProvider

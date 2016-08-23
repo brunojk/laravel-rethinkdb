@@ -6,6 +6,7 @@ use brunojk\LaravelRethinkdb\Console\Migrations\MigrateMakeCommand;
 use brunojk\LaravelRethinkdb\Console\Model\ModelMakeCommand;
 use brunojk\LaravelRethinkdb\Eloquent\Model;
 use brunojk\LaravelRethinkdb\Migrations\MigrationCreator;
+use brunojk\LaravelRethinkdb\Queue\RethinkDBConnector;
 use Illuminate\Support\ServiceProvider;
 
 class RethinkdbServiceProvider extends ServiceProvider
@@ -43,6 +44,14 @@ class RethinkdbServiceProvider extends ServiceProvider
                 return new Connection($config);
             });
         });
+
+
+        // Add connector for queue support.
+//        $this->app->resolving('queue', function ($queue) {
+//            $queue->addConnector('rethinkdb', function () {
+//                return new RethinkDBConnector($this->app['db']);
+//            });
+//        });
 
         $this->app->singleton('command.rethink-migrate.make', function ($app) {
 

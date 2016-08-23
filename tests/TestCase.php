@@ -46,6 +46,20 @@ class TestCase extends Orchestra\Testbench\TestCase
         } catch (\Exception $e) {
         }
 
+        $app['config']->set('queue.default', 'database');
+        $app['config']->set('queue.connections.database', [
+            'driver' => 'rethinkdb',
+            'table'  => 'jobs',
+            'queue'  => 'default',
+            'expire' => 60,
+        ]);
+        if (!Schema::hasTable('jobs')) {
+            Schema::create('jobs');
+        }
+        if (!Schema::hasTable('failed_jobs')) {
+            Schema::create('failed_jobs');
+        }
+
         // FIXME: There should be better way of doing this.
         if (!Schema::hasTable('items')) {
             Schema::create('items', function ($table) {

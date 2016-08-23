@@ -15,7 +15,8 @@
             <!--<directory>tests/</directory>-->
             <!--<file>./tests/SaRTest.php</file>-->
             <!--<file>./tests/Relations2Test.php</file>-->
-            <file>./tests/ConnectionTest.php</file>
+            <!--<file>./tests/ConnectionTest.php</file>-->
+            <file>./tests/QueueTest.php</file>
             <!--<file>./tests/QueryBuilderTest.php</file>-->
             <!--<file>./tests/QueryTest.php</file>-->
         </testsuite>

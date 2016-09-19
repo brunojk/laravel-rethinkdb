@@ -15,7 +15,8 @@ return [
             'replicas' => [
                 'server_tag' => 1
             ],
-            'primaryReplicaTag' => 'server_tag'
+            // primaryReplicaTag is the original docs/examples but with php is snake_case
+            'primary_replica_tag' => 'default'
         ],
 
 //        configs of this table will override the all_tables

@@ -4,6 +4,7 @@ use \brunojk\LaravelRethinkdb\Eloquent\Model;
 
 class Roler extends Model
 {
+    protected $keyType = 'string';
     protected $table = 'rolers';
     protected static $unguarded = true;
 

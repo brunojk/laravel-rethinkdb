@@ -26,12 +26,12 @@ class ModelTest extends TestCase
 
         // NOTE: This is only supported in Laravel >= 5.1, prior to this eloquent just casts
         //       the date to a string, ignoring any custom $dateFormat
-        // $user = User::where('birthday', '>', new DateTime('1975/1/1'))->first();
-        // $this->assertEquals('John Doe', $user->name);
-        // // test custom date format for json output
-        // $json = $user->toArray();
-        // $this->assertEquals($user->birthday->format('l jS \of F Y h:i:s A'), $json['birthday']);
-        // $this->assertEquals($user->created_at->format('l jS \of F Y h:i:s A'), $json['created_at']);
+//        $user = User::where('birthday', '>', new DateTime('1975/1/1'))->first();
+//        $this->assertEquals('John Doe', $user->name);
+//        // test custom date format for json output
+//        $json = $user->toArray();
+//        $this->assertEquals($user->birthday->format('l jS \of F Y h:i:s A'), $json['birthday']);
+//        $this->assertEquals($user->created_at->format('l jS \of F Y h:i:s A'), $json['created_at']);
 
         // test default date format for json output
         $item = Item::create(['name' => 'sword']);

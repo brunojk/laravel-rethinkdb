@@ -4,6 +4,7 @@ use \brunojk\LaravelRethinkdb\Eloquent\Model;
 
 class User extends Model
 {
+    protected $keyType = 'string';
     protected $dates = ['birthday', 'entry.date'];
     protected static $unguarded = true;
     protected $dateFormat = 'l jS \of F Y h:i:s A';

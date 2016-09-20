@@ -488,14 +488,15 @@ class Builder extends QueryBuilder
     /**
      * Add a "group by" clause to the query.
      *
-     * @param array|string $column,...
-     *
+     * @param $groups
      * @return $this
+     * @internal param array|string $column
+     *
      */
-    public function groupBy()
+    public function groupBy(...$groups)
     {
-        foreach (func_get_args() as $arg) {
-            $this->query->group($arg)->ungroup()->map(function ($doc) {
+        foreach ($groups as $group) {
+            $this->query->group($group)->ungroup()->map(function ($doc) {
                 return $doc('reduction')->nth(0);
             });
         }

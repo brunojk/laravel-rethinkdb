@@ -265,6 +265,39 @@ class Builder extends QueryBuilder
         return $this->query->delete()->run();
     }
 
+    public function whereIn($column, $values, $boolean = 'and', $not = false)
+    {
+        $type = $not ? 'NotIn' : 'In';
+
+        if ($values instanceof static) {
+            return $this->whereInExistingQuery(
+                $column, $values, $boolean, $not
+            );
+        }
+
+        // If the value of the where in clause is actually a Closure, we will assume that
+        // the developer is using a full sub-select for this "in" statement, and will
+        // execute those Closures, then we can re-construct the entire sub-selects.
+        if ($values instanceof Closure) {
+            return $this->whereInSub($column, $values, $boolean, $not);
+        }
+
+        if ($values instanceof Arrayable) {
+            $values = $values->toArray();
+        }
+
+        $this->wheres[] = compact('type', 'column', 'values', 'boolean');
+
+        if( is_array($values) )
+            foreach ($values as $value) {
+                if (! $value instanceof Expression) {
+                    $this->addBinding($value, 'where');
+                }
+            }
+
+        return $this;
+    }
+
     /**
      * Compile the where array to filter chain.
      *

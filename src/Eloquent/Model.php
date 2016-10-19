@@ -12,6 +12,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
+    public static function hydrate($items, $connection = null) {
+        if( $items instanceof \ArrayObject)
+            $items = [(array) $items];
+
+        else if( is_object($items) )
+            $items = $items->toArray();
+
+        return parent::hydrate($items, $connection);
+    }
 
     /**
      * Append one or more values to an array.

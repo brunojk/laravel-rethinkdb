@@ -2,6 +2,7 @@
 
 namespace brunojk\LaravelRethinkdb;
 
+use brunojk\LaravelRethinkdb\Auth\RethinkUserProvider;
 use brunojk\LaravelRethinkdb\Console\Migrations\MigrateMakeCommand;
 use brunojk\LaravelRethinkdb\Console\Model\ModelMakeCommand;
 use brunojk\LaravelRethinkdb\Eloquent\Model;
@@ -24,6 +25,10 @@ class RethinkdbServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/config.php' => config_path('rethinkdb.php'),
         ]);
+
+        $this->app['auth']->extend('rethink', function($app, $config) {
+            return new RethinkUserProvider($app['hash'], $config['model']);
+        });
     }
 
     /**

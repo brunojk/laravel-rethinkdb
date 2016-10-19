@@ -1,11 +1,10 @@
 <?php
 namespace brunojk\LaravelRethinkdb\Auth;
 
-use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Hashing\Hasher;
 
-class RethinkUserProvider extends EloquentUserProvider implements UserProvider
+class RethinkUserProvider extends EloquentUserProvider
 {
     /**
      * Create a new database user provider.

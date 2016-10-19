@@ -75,15 +75,17 @@ class RethinkUserProvider extends EloquentUserProvider
         $new_credentials = [];
 
         foreach ($credentials as $key => $value) {
-            $new_credentials[0] = isset($new_credentials[0]) ? $new_credentials[0] . '_' . $key : $key;
-            $new_credentials[1] = isset($new_credentials[1]) ? $new_credentials[1] : [];
-            $new_credentials[1][] = $value;
+            if (! Str::contains($key, 'password')) {
+                $new_credentials[0] = isset($new_credentials[0]) ? $new_credentials[0] . '_' . $key : $key;
+                $new_credentials[1] = isset($new_credentials[1]) ? $new_credentials[1] : [];
+                $new_credentials[1][] = $value;
+            }
         }
 
         $model = $this->createModel();
 
         $result = $model->newQuery()->getQuery()
-            ->r()->getAll($new_credentials[1], ['index' => $new_credentials[0]]);
+            ->r()->getAll($new_credentials[1], ['index' => $new_credentials[0]])->run();
 
         $result = $this->hydrate($result);
 

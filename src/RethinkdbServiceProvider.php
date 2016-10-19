@@ -26,7 +26,7 @@ class RethinkdbServiceProvider extends ServiceProvider
             __DIR__.'/config/config.php' => config_path('rethinkdb.php'),
         ]);
 
-        $this->app['auth']->extend('rethinkdb', function($app, $config) {
+        $this->app['auth']->provider('rethinkdb', function($app, $config) {
             return new RethinkUserProvider($app['hash'], $config['model']);
         });
     }

@@ -1,6 +1,7 @@
 <?php
 namespace brunojk\LaravelRethinkdb\Auth;
 
+use Illuminate\Support\Str;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Hashing\Hasher;
 

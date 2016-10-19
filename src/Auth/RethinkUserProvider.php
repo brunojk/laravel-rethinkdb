@@ -24,9 +24,7 @@ class RethinkUserProvider extends EloquentUserProvider
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveById($identifier) {
-        $model = $this->createModel();
-
-        $result = $model->newQuery()->getQuery()
+        $result = $this->createModel()->newQuery()->getQuery()
             ->r()->get($identifier)->run();
 
         $result = $this->hydrate($result);
@@ -46,9 +44,7 @@ class RethinkUserProvider extends EloquentUserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $model = $this->createModel();
-
-        $result = $model->newQuery()->getQuery()
+        $result = $this->createModel()->newQuery()->getQuery()
             ->r()->getAll($identifier)
             ->filter(function($row) use($token){
                 return $row('token')->eq($token);
@@ -73,20 +69,24 @@ class RethinkUserProvider extends EloquentUserProvider
         if (empty($credentials))
             return null;
 
-        $new_credentials = [];
+        $index = null;
+        $values = null;
 
         foreach ($credentials as $key => $value) {
             if (! Str::contains($key, 'password')) {
-                $new_credentials[0] = isset($new_credentials[0]) ? $new_credentials[0] . '_' . $key : $key;
-                $new_credentials[1] = isset($new_credentials[1]) ? $new_credentials[1] : [];
-                $new_credentials[1][] = $value;
+                $index = is_null($index) ? $key : $index . '_' . $key;
+                $values = is_null($values) ? [] : $values;
+                $values[] = $value;
             }
         }
 
-        $model = $this->createModel();
+        if (is_null($index) || is_null($values))
+            return null;
 
-        $result = $model->newQuery()->getQuery()
-            ->r()->getAll($new_credentials[1], ['index' => $new_credentials[0]])->run();
+        $values = count($values) == 1 ? $values[0] : $values;
+
+        $result = $this->createModel()->newQuery()->getQuery()
+            ->r()->getAll($values, ['index' => $index])->run();
 
         $result = $this->hydrate($result);
 

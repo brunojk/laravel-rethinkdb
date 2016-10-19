@@ -74,13 +74,13 @@ class RethinkUserProvider extends EloquentUserProvider
         return $query->first();
     }
 
-    protected function hydrate( $model, $result ) {
+    protected function hydrate( $result ) {
         if( $result instanceof \ArrayObject)
             $result = [(array) $result];
 
         else if( is_object($result) )
             $result = $result->toArray();
 
-        return $result ? $model->hydrate($result) : null;
+        return $result ? call_user_func(array($this->model, 'hydrate'), $result) : null;
     }
 }

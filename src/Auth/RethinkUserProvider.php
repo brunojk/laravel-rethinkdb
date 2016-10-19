@@ -28,7 +28,7 @@ class RethinkUserProvider extends EloquentUserProvider
         $result = $model->newQuery()->getQuery()
             ->r()->get($identifier)->run();
 
-        $result = $this->hydrate($model, $result);
+        $result = $this->hydrate($result);
 
         if( $result )
             $result = $result->first();
@@ -47,10 +47,19 @@ class RethinkUserProvider extends EloquentUserProvider
     {
         $model = $this->createModel();
 
-        return $model->newQuery()
-            ->where($model->getAuthIdentifierName(), $identifier)
-            ->where($model->getRememberTokenName(), $token)
-            ->first();
+        $result = $model->newQuery()->getQuery()
+            ->r()->getAll($identifier)
+            ->filter(function($row) use($token){
+                return $row('token')->eq($token);
+            })
+            ->run();
+
+        $result = $this->hydrate($result);
+
+        if( $result )
+            $result = $result->first();
+
+        return $result;
     }
 
     /**
@@ -63,15 +72,25 @@ class RethinkUserProvider extends EloquentUserProvider
         if (empty($credentials))
             return null;
 
-        $query = $this->createModel()->newQuery();
+        $new_credentials = [];
 
         foreach ($credentials as $key => $value) {
-            if (! Str::contains($key, 'password')) {
-                $query->where($key, $value);
-            }
+            $new_credentials[0] = isset($new_credentials[0]) ? $new_credentials[0] . '_' . $key : $key;
+            $new_credentials[1] = isset($new_credentials[1]) ? $new_credentials[1] : [];
+            $new_credentials[1][] = $value;
         }
 
-        return $query->first();
+        $model = $this->createModel();
+
+        $result = $model->newQuery()->getQuery()
+            ->r()->getAll($new_credentials[1], ['index' => $new_credentials[0]]);
+
+        $result = $this->hydrate($result);
+
+        if( $result )
+            $result = $result->first();
+
+        return $result;
     }
 
     protected function hydrate( $result ) {

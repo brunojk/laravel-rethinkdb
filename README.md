@@ -23,7 +23,7 @@ This project is aiming at Laravel 5 which is soon to be released, so it might no
 1. Rethinkdb : You need to make sure that you have installed [rethinkdb](http://www.rethinkdb.com) successfully, you can reffer to rethinkdb [documentation](https://rethinkdb.com/docs/) for the full instruction of how to install rethinkdb.
 
 1. Laravel 5.2 : this package was designed to work with [laravel](http://laravel.com) 5.2, so it will not work with laravel 4.x.
-
+(Also works with some bugs on Laravel 5.4)
 ## Installation
 
 To fully install this package you will have either to add it manually to your `composer.json` file, or you can execute the following command :
@@ -50,6 +50,8 @@ Now that you have the service provider setup, you will need to add the following
             'host'      => env('DB_HOST', 'localhost'),
             'port'      => env('DB_PORT', 28015),
             'database'  => env('DB_DATABASE', 'homestead'),            
+            'username'  => env('DB_USERNAME', 'admin'),            
+            'password'  => env('DB_PASSSWORD', ''),            
         ]
 
 After you add it, you can just configure your enviroment file to be something like :
@@ -57,6 +59,8 @@ After you add it, you can just configure your enviroment file to be something li
 	DB_HOST=localhost
 	DB_DATABASE=homestead
 	DB_CONNECTION=rethinkdb
+	DB_USERNAME=admin
+	DB_PASSWORD=
 
 but you can always updatr your `DB_HOST` to point to the IP where you have installed rethinkdb.
 
@@ -67,6 +71,7 @@ but you can always updatr your `DB_HOST` to point to the IP where you have insta
 You can easily create a migration file using the following command which will create a migration file for you to create the users table and use the package schema instead of Laravel schema:
 
 `php artisan make:rethink-migration Users --create`
+(Doesn't on Laravel 5.4)
 
 Please note that you can use the same options that you use in `make:migration` with `make:rethink-migration`, as its based on laravel `make:migration`
 

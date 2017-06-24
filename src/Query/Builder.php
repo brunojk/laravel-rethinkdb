@@ -29,7 +29,7 @@ class Builder extends QueryBuilder
      *
      * @var array
      */
-    protected $operators = [
+    public $operators = [
         '=', '<', '>', '<=', '>=', '<>', '!=',
         'like', 'not like', 'between', 'ilike',
         '&', '|', '^', '<<', '>>',

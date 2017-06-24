@@ -27,8 +27,8 @@ class Connection extends \Illuminate\Database\Connection
         $port = isset($config['port']) ? $config['port'] : 28015;
         $authKey = isset($config['authKey']) ? $config['authKey'] : null;
 
-        $upconfig = ( isset($config['user']) && !empty($config['user']) && isset($config['password']) && !empty($config['password'])) ?
-            ['host' => $config['host'], 'user' => $config['user'], 'password' => $config['password']] :
+        $upconfig = ( isset($config['username']) && !empty($config['username']) && isset($config['password']) && !empty($config['password'])) ?
+            ['host' => $config['host'], 'user' => $config['username'], 'password' => $config['password']] :
             $config['host'];
 
         $this->connection = r\connect($upconfig, $port, $this->database, $authKey);
